@@ -535,6 +535,34 @@ function hmrAcceptRun(bundle, id) {
 var _three = require("three");
 var _editor = require("./editor");
 var _db = require("./db");
+const boxGeometry = new _three.BoxGeometry(2, 2, 2);
+const edges = new _three.EdgesGeometry(boxGeometry);
+const lines = new _three.LineSegments(edges, new _three.LineBasicMaterial({
+    color: 0x333333
+}));
+const boxMaterial = new _three.MeshToonMaterial({
+    color: 0x00ff00
+});
+const boxGroup = new _three.Group();
+const box = new _three.Mesh(boxGeometry, boxMaterial);
+boxGroup.add(box);
+boxGroup.add(lines);
+(0, _editor.editor).add(boxGroup);
+boxGroup.position.z = 10;
+const boxGeometry4 = new _three.BoxGeometry(2, 2, 2);
+const edges4 = new _three.EdgesGeometry(boxGeometry4);
+const lines4 = new _three.LineSegments(edges4, new _three.LineBasicMaterial({
+    color: 0x00ff00
+}));
+const boxMaterial4 = new _three.MeshToonMaterial({
+    color: 0x00ff00
+});
+const boxGroup4 = new _three.Group();
+const box4 = new _three.Mesh(boxGeometry4, boxMaterial4);
+//boxGroup4.add(box);
+boxGroup4.add(lines4);
+(0, _editor.editor).add(boxGroup4);
+boxGroup4.position.z = 5;
 const line = (0, _db.Db).Line(new _three.Vector3(10, 10, 0), new _three.Vector3(10, 10, 5));
 (0, _editor.editor).add(line);
 const line3 = (0, _db.Db).Line(new _three.Vector3(15, 10, 0), new _three.Vector3(15, 10, 5));
@@ -30490,21 +30518,86 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Db", ()=>Db);
 var _three = require("three");
-// const boxGeometry = new three.BoxGeometry(2, 2, 2);
-// const edges = new three.EdgesGeometry(boxGeometry);
-// const lines = new three.LineSegments(
-//   edges,
-//   new three.LineBasicMaterial({ color: 0x333333 })
-// );
-// const boxMaterial = new three.MeshToonMaterial({
-//   color: 0x00ff00,
-// });
-// const boxGroup = new three.Group();
-// const box = new three.Mesh(boxGeometry, boxMaterial);
-// boxGroup.add(box);
-// boxGroup.add(lines);
-// editor.add(boxGroup);
-// boxGroup.position.z = 10;
+const createIBeamProfilePoints = (profile)=>{
+    // create all points if the 'I' beam profile,
+    // adding the last point as the first to close the profile.
+    const p1 = {
+        x: profile.b * -0.5,
+        y: 0,
+        z: 0
+    };
+    const p2 = {
+        x: profile.b * 0.5,
+        y: 0,
+        z: 0
+    };
+    const p3 = {
+        x: profile.b * 0.5,
+        y: -profile.tf,
+        z: 0
+    };
+    const p4 = {
+        x: profile.tw * 0.5,
+        y: -profile.tf,
+        z: 0
+    };
+    const p5 = {
+        x: profile.tw * 0.5,
+        y: -profile.h - profile.tf,
+        z: 0
+    };
+    const p6 = {
+        x: profile.b * 0.5,
+        y: -profile.h - profile.tf,
+        z: 0
+    };
+    const p7 = {
+        x: profile.b * 0.5,
+        y: -profile.h,
+        z: 0
+    };
+    const p8 = {
+        x: profile.b * -0.5,
+        y: -profile.h,
+        z: 0
+    };
+    const p9 = {
+        x: profile.b * -0.5,
+        y: -profile.h - profile.tf,
+        z: 0
+    };
+    const p10 = {
+        x: profile.tw * -0.5,
+        y: -profile.h - profile.tf,
+        z: 0
+    };
+    const p11 = {
+        x: profile.tw * -0.5,
+        y: -profile.tf,
+        z: 0
+    };
+    const p12 = {
+        x: profile.b * -0.5,
+        y: -profile.tf,
+        z: 0
+    };
+    const p13 = p1;
+    return [
+        p1,
+        p2,
+        p3,
+        p4,
+        p5,
+        p6,
+        p7,
+        p8,
+        p9,
+        p10,
+        p11,
+        p12,
+        p13
+    ];
+};
 const Db = {
     Line: (startPoint, endPoint)=>{
         const points = [];
